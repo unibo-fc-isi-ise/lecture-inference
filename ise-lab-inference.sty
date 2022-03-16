@@ -1,5 +1,10 @@
+\usepackage{multicol}
+\usepackage{amsmath,amssymb}
+\usepackage{adjustbox}
+\usepackage{todonotes}
+
 % ISE numbering
-\labN{0}
+\labN{2}
 
 \AtBeginSection[]
 {
@@ -18,3 +23,26 @@
             %    \end{multicols}
     \end{frame}
 }
+
+\newcommand{\argmin}[2]{\underset{#1}{\text{argmin}} \left\{ #2 \right\}}
+\newcommand{\argmax}[2]{\underset{#1}{\text{argmax}} \left\{ #2 \right\}}
+\newcommand{\unify}[2]{\text{unify}(#1, #2)}
+\newcommand{\mgu}[2]{\text{mgu}(#1, #2)}
+\newcommand{\functor}[1]{\mathtt{#1}}
+\newcommand{\variable}[1]{\mathit{#1}}
+\newcommand{\predication}[1]{\text{\textit{#1}}}
+\newcommand{\consdot}{\functor{~.~}}
+\newcommand{\fullstop}{\mathtt{.}}
+
+\newcommand{\grammar}[1]{\mathsf{#1}}
+\newcommand{\meta}[1]{\grammar{\left\langle#1\right\rangle}}
+\newcommand{\terminal}[1]{\text{`}\mathit{#1}\text{'}}
+\newcommand{\kleenestar}{^\grammar{*}}
+\newcommand{\plus}{\grammar{+}}
+\newcommand{\questionmark}{\grammar{?}}
+\newcommand{\onceormore}[1]{\grammar{(#1)}\plus}
+\newcommand{\severaltimes}[1]{\grammar{(#1)}\kleenestar}
+\newcommand{\optional}[1]{\grammar{(#1)}\questionmark}
+
+\newcommand{\twopkt}{\textsc{2P-Kt}}
+
