@@ -355,6 +355,155 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}[allowframebreaks]{Unification}
+    \begin{block}{Purpose}
+        Compute which variables assignment may let a given formula
+        %
+        \begin{itemize}
+            \item be equal to another one
+            \item hence fitting a particular context
+        \end{itemize}
+    \end{block}
+    %
+    \begin{block}{Informal definition}
+        The operation by which one may compute
+        %
+        \begin{itemize}
+            \item an \alert{unifier} among any two formul\ae{}
+            %
+            \begin{itemize}
+                \item[ie] a \alert{substitution} making the two formul\ae{} \alert{syntactically equal}
+            \end{itemize}
+
+            \item or figure out that it is impossible to do so
+        \end{itemize}
+    \end{block}
+    %
+    \begin{alertblock}{Formal definition}
+        \begin{center}
+            $\text{unify}(\Phi, \Psi) = \begin{cases}
+                \sigma & \text{if} ~ \exists \sigma : \Phi = \Psi / \sigma
+                \\
+                \Box & \text{otherwise}
+            \end{cases}$
+        \end{center}
+        %
+        where
+        %
+        \begin{itemize}
+            \item \alert{$\sigma$} is called \alert{unifier} (i.e. the unifying substitution)
+            \item \alert{$\Box$} denotes the \alert{failed} substitution (i.e. the impossibility to unify)
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\subsection{Most General Unifier}
+
+\begin{frame}{Most General Unifier (MGU)}
+
+    \begin{alertblock}{Important remark}\centering
+        In the general case, \alert{several} unifieriers may exist for any 2 formul\ae{}
+    \end{alertblock}
+    %
+    \begin{exampleblock}{Try unifying $\predication{p}(\functor{a}, \variable{X}, \variable{X})$ and $\predication{p}(\variable{A}, \variable{B}, \variable{C})$}
+        \begin{itemize}
+            \item $\{ \variable{A} \mapsto \functor{a}, \variable{B} \mapsto \functor{a}, \variable{C} \mapsto \functor{a}, \variable{X} \mapsto \functor{a} \}$
+            \item $\{ \variable{A} \mapsto \functor{a}, \variable{B} \mapsto \functor{b}, \variable{C} \mapsto \functor{b}, \variable{X} \mapsto \functor{b} \}$
+            \item $\{ \variable{A} \mapsto \functor{a}, \variable{B} \mapsto \functor{c}, \variable{C} \mapsto \functor{c}, \variable{X} \mapsto \functor{c} \}$
+            \item[$\vdots$]
+            \item \alert{$\{ \variable{A} \mapsto \functor{a}, \variable{B} \mapsto \variable{X}, \variable{C} \mapsto \variable{X} \}$} \hint{this is more general}
+        \end{itemize}
+    \end{exampleblock} 
+    %
+    \begin{block}{Which unifier?}
+        We're commonly interested in the \alert{most general} unifier!
+    \end{block}
+\end{frame}
+
+\begin{frame}{When do Formul\ae{} Unify? A.k.a. how to compute MGU} 
+    \begin{block}{Formal definition}
+        \begin{adjustbox}{width=\textwidth} 
+            \begin{tabular}{c||c|c|c}
+                $\text{mgu}(\Phi,\Psi)$ & $\Phi \equiv \functor{c}$ & $\Phi \equiv \variable{X}$ & $\Phi \equiv f(t_1, \ldots, t_n)$
+                \\
+                \hline\hline
+                $\Psi \equiv \functor{k}$ & $\begin{cases} \varnothing & \text{if} ~ \functor{c} = \functor{k} \\ \Box & \text{if} ~ \functor{c} \neq \functor{k} \end{cases} $ & $\{\variable{X} \mapsto \functor{k}\}$ & $\Box$
+                \\
+                \hline
+                $\Psi \equiv \variable{Y}$ & $\{\variable{Y} \mapsto \functor{c}\}$ & $\{\variable{X} \mapsto \variable{Y}\}$ & $\{\variable{Y} \mapsto f(t_1, \ldots, t_n)\}$
+                \\
+                \hline
+                $\Psi \equiv g(x_1, \ldots, x_m)$ & $\Box$ & $\{\variable{X} \mapsto g(x_1, \ldots, x_m)\}$ & $\begin{cases} \bigcup_i \text{mgu}(t_i, x_i) & \text{if} ~ f = g \wedge n = m \\ & \quad \wedge \not\exists j : \text{mgu}(t_j, x_j) = \Box \\ \Box & \text{otherwise} \end{cases}$
+            \end{tabular}
+        \end{adjustbox}
+        %
+        where
+        %
+        \begin{itemize}\small
+            \item $\Phi, \Psi$ are arbitrary formul\ae{}
+            \item $f, g$ are either functors or predications (or logic connectives of any sort)
+            \item $t_1, \ldots, t_n$ and $x_1, \ldots, x_m$ are terms
+        \end{itemize}
+    \end{block}
+    %
+    \hint{commonly, we compute MGU via the algorithm proposed by \cite{MartelliM82}}
+\end{frame}
+
+\begin{frame}{Computing MGU -- Examples}
+    \begin{itemize}
+        \item $\text{mgu}(\quad 
+            \alert{\functor{f}(\variable{X}, \functor{g}(2))} 
+            \quad , \quad 
+            \alert{\functor{f}(1, \functor{g}(\variable{Y}))}  
+        \quad)$ 
+        %
+        \begin{itemize}
+            \item[$=$] $\{ \variable{X} \mapsto 1, \variable{Y} \mapsto 2 \}$
+        \end{itemize}
+
+        \vfill
+
+        \item $\text{mgu}(\quad 
+            \alert{\predication{p}(\functor{a}, \functor{f}(\variable{X}), \variable{X})} 
+            \quad , \quad 
+            \alert{\predication{p}(\variable{A}, \variable{B}, \variable{A})} 
+        \quad)$ 
+        %
+        \begin{itemize}
+            \item[$=$] $\{ \variable{X} \mapsto \functor{a}, \variable{Y} \mapsto \functor{f}(\functor{a}), \variable{X} \mapsto \functor{a} \}$
+        \end{itemize}
+
+        \vfill
+
+        \item $\text{mgu}(\enspace 
+            \alert{\predication{sum}(\functor{s}(\functor{s}(\functor{s}(\functor{z}))), \functor{s}(\functor{z}), \functor{s}(\functor{s}(\functor{s}(\functor{s}(\functor{z})))))} 
+            \enspace , \enspace 
+            \alert{\predication{sum}(\functor{s}(\variable{N}), \variable{M}, \functor{s}(\variable{R}))} 
+        \enspace)$ 
+        %
+        \begin{itemize}
+            \item[$=$] $\{ \variable{N} \mapsto \functor{s}(\functor{s}(\functor{z})), \variable{M} \mapsto \functor{s}(\functor{z}), \variable{R} \mapsto \functor{s}(\functor{s}(\functor{s}(\functor{z}))) \}$
+        \end{itemize}
+    
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Fun facts about Unification}
+    \begin{itemize}
+        \item Unification is far more general than logic programming alone
+        
+        \vfill
+
+        \item Logic unification is one major contribution of LP to \alert{software engineering}\ccite{SterlingY96}
+        
+        \vfill
+
+        \item Unification is what enables \alert{generics} and \alert{type inference} in strongly-typed languages
+        %
+        \kotlinimport{listings/unification-in-oop-langs.kt}
+    \end{itemize}
+\end{frame}
+
 %===============================================================================
 \section{Resolution}
 %===============================================================================
