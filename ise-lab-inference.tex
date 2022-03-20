@@ -505,7 +505,7 @@
 \end{frame}
 
 %===============================================================================
-\section{Resolution}
+\section{Satisfiability, Resolution, and Inference}
 %===============================================================================
 
 \begin{frame}{Overview}
@@ -545,6 +545,177 @@
         \end{description}
     \end{itemize}
 \end{frame}
+
+\begin{frame}{(Un-)Satisfiability}
+    \begin{block}{Informal Definitions}
+        A \alert{set} of logic formul\ae{} can be
+        %
+        \begin{description}
+            \item[\textbf{un}satisfiable] --- meaning that a \alert{contradiction} may be derived from it
+            %
+            \begin{itemize}
+                \item[eg] because it contains opposite statements
+            \end{itemize} 
+
+            \item[satisfiable] --- meaning that it is \emph{not} \textbf{un}satisfiable
+            %
+            \begin{itemize}
+                \item[ie] no statement therein contained contradicts the others
+            \end{itemize}  
+        \end{description}
+    \end{block}
+
+    \begin{exampleblock}{Example of \textbf{un}satisfiable fomul\ae{}}
+        \centering
+        $\predication{triangle}(A, B, C) \Leftarrow (A \leq B + C) \wedge (B \leq A + C) \wedge (C \leq A + B)  \fullstop$
+        \\
+        $\predication{triangle}(10, 2, 3) \fullstop$
+    \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Resolution = Deciding (Un-)Satisfiability}
+
+    \begin{block}{Resolution Principles}
+        \begin{itemize}
+            \item Algorithms aimed at \alert{deciding} whether a given set of formul\ae{} is \textbf{un}satisfiable
+            %
+            \begin{itemize}
+                \item by searching for a particular \alert{contradiction}
+            \end{itemize}
+        \end{itemize}
+    \end{block}
+
+    \begin{exampleblock}{SL resolution principle \cite{Robinson1965}}
+        \begin{itemize}
+            \item computes \textbf{un}satisfiability for any given set of FOL formul\ae{}
+            %
+            \begin{itemize}
+                \item provided that they are in Skolemized form\footnote{cf. \uuurl{https://mathworld.wolfram.com/SkolemizedForm.html}}
+            \end{itemize}
+        \end{itemize}
+    \end{exampleblock}
+
+    \begin{exampleblock}{SL\textbf{D} resolution principle \cite{KowVan1970}}
+        \begin{itemize}
+            \item specialization for the SL resolution principle for Horn clauses
+        \end{itemize}
+    \end{exampleblock}
+
+    \begin{alertblock}{How to prove a goal $\Phi$ against a theory $\mathcal{T}$?}
+        \begin{itemize}
+            \item Proof \alert{by contradiction} (a.k.a. \emph{reduction ab adsurdum})!
+            %
+            \begin{itemize}
+                \item[ie] by proving that $\mathcal{T} \cup \{ \alert{\neg} \Phi \}$ is \alert{unsatisfiable}
+            \end{itemize}
+        \end{itemize}
+    \end{alertblock}
+
+    \begin{exampleblock}{General proof structure}
+        \begin{enumerate}
+            \item Assuming that $\mathcal{T}$ is satisfiable
+            
+            \item if we can prove $\mathcal{T} \cup \{ \alert{\neg} \Phi \}$ is unsatisfiable
+            
+            \item then we know that $\mathcal{T} \cup \{ \Phi \}$ is satisfiable
+        \end{enumerate}
+    \end{exampleblock}
+\end{frame}
+
+\subsection{SL(D) Resolution}
+
+\begin{frame}[allowframebreaks]{SL Resolution Principle\ccite{Robinson1965}}
+    \begin{block}{\small Assumptions}
+        \begin{itemize}\small
+            \item Let $\mathcal{T} = \{ \Phi, \Psi, \ldots \}$ be a set of formul\ae{}
+            %
+            \begin{itemize}\footnotesize
+                \item where each formula is a \alert{disjunction of literals} $\phi, \psi, \ldots$
+                %
+                \begin{itemize}\scriptsize
+                    \item and where each literal may or may not be \alert{negated}
+                \end{itemize}
+            \end{itemize}
+        \end{itemize}
+    \end{block}
+    %
+    \begin{alertblock}{Resolution steps}
+        \begin{enumerate}
+            \item As long as there \alert{exist} any two formul\ae{} \alert{$\Phi$} and \alert{$\Psi$} such that
+            %
+            \begin{itemize}
+                \item $\Phi \equiv \phi_1 \vee \ldots \vee \phi_{i-1} \vee \alert{\phi_i} \vee \phi_{i+1} \vee \ldots \vee \phi_{n}$
+                \item $\Psi \equiv \psi_1 \vee \ldots \vee \psi_{j-1} \vee \alert{\neg\psi_j} \vee \psi_{j+1} \vee \ldots \vee \psi_{m}$
+                \item $\exists \alert{\sigma} : \text{mgu}(\phi_i, \psi_j) = \alert{\sigma}$
+            \end{itemize}
+
+            \item Rewrite both $\Phi$ and $\Psi$ removing $\phi_i$ and $\psi_j$, respectively
+            %
+            \begin{itemize}
+                \item $\Phi := (\phi_1 \vee \ldots \vee \alert{\phi_{i-1} \vee \phi_{i+1}} \vee \ldots \vee \phi_{n}) \alert{/ \sigma} $
+                \item $\Psi := \psi_1 \vee \ldots \vee \alert{\psi_{j-1} \vee \psi_{j+1}} \vee \ldots \vee \psi_{m} \alert{/ \sigma}$
+            \end{itemize}
+
+            \item \alert{Stop} if either $\Phi$ or $\Psi$ are empty (i.e. if \alert{$n = 0 \vee m = 0$})
+            %
+            \begin{itemize}
+                \item \alert{otherwise}, % apply \alert{$\sigma$} to \alert{all} formul\ae{} in $\mathcal{T}$, and 
+                go to step 1
+            \end{itemize}
+            
+        \end{enumerate}
+    \end{alertblock}
+    %
+    \begin{alertblock}{The proof tree}
+        \begin{itemize}
+            \item SL resolution essentially explores a \alert{tree} of possible \alert{rewritings}
+            \item At each step:
+            %
+            \begin{itemize}
+                \item 2 rules are simplified
+                \item some variables are assigned
+            \end{itemize}
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{SL Resolution Principle -- Proof Tree Example}
+    \begin{figure}
+        \includegraphics[width=\linewidth]{figures/sl-path-all.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{SL Resolution Principle -- Search Space Size}
+    \begin{itemize}
+        \item The proof tree is potentially \alert{huge}
+        %
+        \begin{itemize}
+            \item exploring it all in an \alert{uninformed} way is both costly, computationally
+        \end{itemize}
+        
+        \vfill
+
+        \item At each step, several couples of literals may be simplified
+        %
+        \begin{itemize}
+            \item enumerating them all is computationally expensive as well
+        \end{itemize}
+        
+        \vfill
+
+        \item The ordering of rewritings is \alert{relevant}
+        %
+        \begin{itemize}
+            \item simplifications are \alert{non-commutative}
+        \end{itemize}
+
+        \vfill
+
+        \item Furthermore, FOL formul\ae{} are rarely Skolemized and in \alert{conjunctive} form
+    \end{itemize}
+\end{frame}
+
 
 %===============================================================================
 \section{Demos}
