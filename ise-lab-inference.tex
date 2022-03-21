@@ -12,8 +12,8 @@
 \usepackage{ise-lab-common}
 \usepackage{ise-lab-inference}
 % version
-\newcommand{\versionmajor}{0}
-\newcommand{\versionminor}{2}
+\newcommand{\versionmajor}{1}
+\newcommand{\versionminor}{0}
 \newcommand{\versionpatch}{0-dev}
 \newcommand{\version}{\versionmajor.\versionminor.\versionpatch}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -623,7 +623,7 @@
     \end{exampleblock}
 \end{frame}
 
-\subsection{SL(D) Resolution}
+\subsection{SL Resolution}
 
 \begin{frame}[allowframebreaks]{SL Resolution Principle\ccite{Robinson1965}}
     \begin{block}{\small Assumptions}
@@ -712,25 +712,203 @@
 
         \vfill
 
-        \item Furthermore, FOL formul\ae{} are rarely Skolemized and in \alert{conjunctive} form
+        \item FOL formul\ae{} are \alert{rarely} Skolemized and in \alert{conjunctive} form
+        %
+        \begin{itemize}
+            \item conversely, Horn clauses are Skolemized \& conjunctive \alert{by definition}
+        \end{itemize}
     \end{itemize}
 \end{frame}
 
+\subsection{SLD Resolution}
 
-%===============================================================================
-\section{Demos}
-%===============================================================================
+\begin{frame}{SLD Resolution Principle -- Overview}
+    \begin{alertblock}{SL Resolution Principle for \textbf{Definite Clauses}}
+        \begin{itemize}
+            \item SLD just applied SL to Horn Clauses
+            
+            \item Horn clauses are Skolemized \& conjunctive \alert{by definition}
+            
+            \item Easier to select couples of literals to be simplified
+            %
+            \begin{itemize}
+                \item any literal in the \alert{body} of any rule \alert{unifying} with the \alert{head} of any rule
+            \end{itemize}
 
-\startDemo
+            \item[$\rightarrow$] Procedural interpretation of resolution\ccite{KowVan1970}
+            %
+            \begin{itemize}
+                \item[ie] literals simplification $\approx$ function call
+            \end{itemize}
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
 
-\begin{frame}{\currentDemo{} -- First Demo}
-	\begin{block}{Goal}
-		Goal here
-	\end{block}
-	%
-	\begin{itemize}
-		\item further info here
-	\end{itemize}
+\begin{frame}[allowframebreaks]{SLD Resolution Principle -- Example}
+    \begin{block}{A theory (in implication form)}
+        %
+        \begin{multicols}{2}
+            \begin{itemize}
+                \item $\predication{parent}(\functor{abraham}, \functor{isaac}) \fullstop$
+                \item $\predication{parent}(\functor{isaac}, \functor{jacob}) \fullstop$
+                \item $\predication{parent}(\functor{sarah}, \functor{isaac}) \fullstop$
+                \item $\predication{parent}(\functor{jacob}, \functor{joseph}) \fullstop$
+                \item $\predication{parent}(\functor{jacob}, \functor{dan}) \fullstop$
+                \item $\predication{parent}(\functor{jacob}, \functor{dinah}) \fullstop$
+                \item $\predication{male}(\functor{abraham}) \fullstop$
+                \item $\predication{male}(\functor{isaac}) \fullstop$
+                \item $\predication{male}(\functor{jacob}) \fullstop$
+                \item $\predication{male}(\functor{joseph}) \fullstop$
+                \item $\predication{male}(\functor{dan}) \fullstop$
+            \end{itemize}
+        \end{multicols}
+        %
+        \begin{itemize}
+            \item $\predication{son}(X, Y) \Leftarrow \predication{parent}(Y, Y) \wedge \predication{male}(X) \fullstop$
+            \item $\Leftarrow \predication{son}(S, \functor{jacob}) \fullstop$
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{SLD Resolution Principle -- Example}
+    \begin{alertblock}{The same theory (in disjunctive form)}
+        %
+        \begin{multicols}{2}
+            \begin{itemize}
+                \item $\predication{parent}(\functor{abraham}, \functor{isaac}) \fullstop$
+                \item $\predication{parent}(\functor{isaac}, \functor{jacob}) \fullstop$
+                \item $\predication{parent}(\functor{sarah}, \functor{isaac}) \fullstop$
+                \item $\predication{parent}(\functor{jacob}, \functor{joseph}) \fullstop$
+                \item $\predication{parent}(\functor{jacob}, \functor{dan}) \fullstop$
+                \item $\predication{parent}(\functor{jacob}, \functor{dinah}) \fullstop$
+                \item $\predication{male}(\functor{abraham}) \fullstop$
+                \item $\predication{male}(\functor{isaac}) \fullstop$
+                \item $\predication{male}(\functor{jacob}) \fullstop$
+                \item $\predication{male}(\functor{joseph}) \fullstop$
+                \item $\predication{male}(\functor{dan}) \fullstop$
+            \end{itemize}
+        \end{multicols}
+        %
+        \begin{itemize}
+            \item $\predication{son}(X, Y) \vee \neg\predication{parent}(Y, Y) \vee \neg\predication{male}(X) \fullstop$
+            \item $\neg\predication{son}(S, \functor{jacob}) \fullstop$
+        \end{itemize}
+    \end{alertblock}
+
+    \begin{figure}
+        \includegraphics[width=\linewidth]{figures/proof-tree.png}
+        %
+        \caption{Proof tree exploration subtended by the query $\Leftarrow \predication{son}(S, \functor{jacob}) \fullstop$}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{About the Proof Tree Exploration}
+    \begin{itemize}
+        \item SL(D) is a \alert{non-deterministic} algorithm
+        %
+        \begin{itemize}
+            \item[ie] at any given step, several choices may be taken 
+            %
+            \begin{itemize}
+                \item[aka] different paths may be explored
+            \end{itemize} 
+        \end{itemize}
+
+        \bigskip
+
+        \item No prescription concerning which literals should be simplified first  
+        %
+        \begin{itemize}
+            \item[aka] which rule to try first when multiple ones could apply?
+        \end{itemize}
+
+        \bigskip
+
+        \item Possible ways to explore the proof tree:
+        %
+        \begin{description}
+            \item[backward chaining] (a.k.a. \emph{goal-directed}) --- start from a goal and try to solve any sub-goal implying it, recursively
+            \item[forward chaining] --- start from theory and try to infer anything that can be inferred from it
+        \end{description}
+
+        \framebreak
+
+        \item Possible search strategies to explore the proof tree:
+        %
+        \begin{description}
+            \item[depth first] --- explore most recent goals \alert{first}
+            \item[breadth first] --- explore most recent goals \alert{last} 
+            \item[$\vdots$] 
+        \end{description}
+
+        \bigskip
+
+        \item Relevant \emph{properties} a given search strategy should have: 
+        %
+        \begin{description}
+            \item[soundness] --- \alert{any} solution found by the strategy is \alert{correct}
+            \item[completeness] --- the strategy enumerates \alert{all} correct solution
+        \end{description}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Proof Tree Exploration -- Example}
+    \begin{figure}
+        \centering
+        \includegraphics[width=.8\linewidth]{figures/exploration.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Proof Tree Exploration -- Example (depth-first)}
+    \begin{figure}
+        \centering
+        \includegraphics[width=.7\linewidth]{figures/exploration-df.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Proof Tree Exploration -- Example (breadth-first)}
+    \begin{figure}
+        \centering
+        \includegraphics[width=.7\linewidth]{figures/exploration-bf.pdf}
+    \end{figure}
+\end{frame}
+
+\subsubsection{Prolog}
+
+\begin{frame}{Prolog's Proof Tree Exploration Strategy}
+    \begin{itemize}
+        \item Goal-directed, depth-first, sequential exploration strategy
+        %
+        \begin{itemize}
+            \item may get stuck in recursive definitions
+        \end{itemize}
+
+        \vfill
+
+        \item Goal-directed $\rightarrow$ \alert{procedural} interpretation of Prolog
+        
+        \vfill
+
+        \item Depth-first $\approx$ \alert{left-most} goal first, \alert{top-most} rule first
+        
+        \vfill
+
+        \item \alert{Backtracking} $\rightarrow$ sequential exploration
+        %
+        \begin{itemize}
+            \item \emph{concurrent} implementations may get rid of backtracking
+        \end{itemize}
+
+        \vfill
+
+        \item Support for \alert{side-effects} \emph{during} resolution
+        %
+        \begin{itemize}
+            \item[eg] edits to the knowledge base (a.k.a. assertions and retractions)
+            \item[eg] manipulation of exploration procedure (e.g. cut)
+            \item[eg] I/O facilities via streams (a.k.a. sources and sinks) 
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 %===============================================================================
