@@ -13,8 +13,8 @@
 \usepackage{ise-lab-inference}
 % version
 \newcommand{\versionmajor}{1}
-\newcommand{\versionminor}{0}
-\newcommand{\versionpatch}{0-dev}
+\newcommand{\versionminor}{1}
+\newcommand{\versionpatch}{0}
 \newcommand{\version}{\versionmajor.\versionminor.\versionpatch}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \title[\currentLab{} -- Inference]{Automatic Inference on Horn Clauses}
@@ -138,9 +138,9 @@
                 \meta{Assignment} & := & \meta{Variable} \terminal{\mapsto} \meta{Term}
                 \\
                 \meta{Term} & := & \text{see lecture \cite{lectures:ise-kr}}
-				\\
+                \\
                 \meta{Variable} & := & \text{see lecture \cite{lectures:ise-kr}}
-			\end{array}$
+            \end{array}$
         \end{center}
     \end{alertblock}
 
@@ -150,10 +150,10 @@
             \item[$\{ \variable{X} \mapsto \functor{a} \}$] --- the substitution assigning variable $\variable{X}$ with the constant $\functor{a}$
             \item[$\{ \variable{X} \mapsto \functor{a}, \variable{Y} \mapsto \functor{b} \}$] --- the substitution assigning 
             %
-			\begin{itemize}
-				\item variable $\variable{X}$ with the constant $\functor{a}$, and
-				\item variable $\variable{Y}$ with the constant $\functor{b}$ 
-			\end{itemize} 
+            \begin{itemize}
+                \item variable $\variable{X}$ with the constant $\functor{a}$, and
+                \item variable $\variable{Y}$ with the constant $\functor{b}$ 
+            \end{itemize} 
         \end{description}
     \end{exampleblock}
 \end{frame}
@@ -167,94 +167,94 @@
     %
     \begin{block}{Informal definition}
         The operation by which 
-		%
-		\begin{enumerate}
-			\item a formula (i.e. a term, a predicate, or a Horn cluase) \ldots
-			\item \ldots is \alert{rewritten} \ldots
-			\item \ldots by \alert{replacing} all variables therein contained \ldots
-			\item \ldots with some other \alert{terms}, as prescribed by a given \alert{substitution}
-		\end{enumerate}
+        %
+        \begin{enumerate}
+            \item a formula (i.e. a term, a predicate, or a Horn cluase) \ldots
+            \item \ldots is \alert{rewritten} \ldots
+            \item \ldots by \alert{replacing} all variables therein contained \ldots
+            \item \ldots with some other \alert{terms}, as prescribed by a given \alert{substitution}
+        \end{enumerate}
     \end{block}
-	%
+    %
     \begin{block}{Notation}
         \begin{itemize}
-			\item We denote by 
-			%
-			\[ \Phi / \sigma \qquad \equiv \Phi'\]
-			%
-			the operation of applying a substitution $\sigma$ to some formula $\Phi$
-			%
-			\begin{itemize}
-				\item hence producing a new formula $\Phi$
-			\end{itemize}
+            \item We denote by 
+            %
+            \[ \Phi / \sigma \qquad \equiv \Phi'\]
+            %
+            the operation of applying a substitution $\sigma$ to some formula $\Phi$
+            %
+            \begin{itemize}
+                \item hence producing a new formula $\Phi$
+            \end{itemize}
 
-			\item Notice that:
-			%
-			\begin{itemize}
-				\item $(\cdot / \cdot)$ is a function mapping formul\ae{} and substitutions to other formul\ae{}
-				\item we denote substitutions by lowercase greek letters such as $\sigma$, $\rho$, etc.
-				\item we denote formul\ae{} by uppercase greek letters such as $\Phi$, $\Psi$, etc.
-			\end{itemize} 
-		\end{itemize}
+            \item Notice that:
+            %
+            \begin{itemize}
+                \item $(\cdot / \cdot)$ is a function mapping formul\ae{} and substitutions to other formul\ae{}
+                \item we denote substitutions by lowercase greek letters such as $\sigma$, $\rho$, etc.
+                \item we denote formul\ae{} by uppercase greek letters such as $\Phi$, $\Psi$, etc.
+            \end{itemize} 
+        \end{itemize}
     \end{block}
     %
     \begin{alertblock}{Formal definition}
-		Let $\Phi, \Psi, \Psi', \Psi_1, \ldots, \Psi_n$ be logic formul\ae{} (i.e. terms, predicates, or a Horn cluases) of any sort, 
-		%
-		let $\predication{p}$ be a $n$-ary predication, let $\functor{f}$ be a $m$-ary functor, let $\functor{k}$ be a constant, let $t$ be a term of any sort,
-		%
-		and let $\sigma$ be a (possibly empty) substitution;
-		%
-		then
-		
-		$$\Phi / \sigma = \begin{cases}
-			\Psi / \sigma \Leftarrow \Psi' / \sigma & \text{if} ~ \Phi \equiv \Psi \Leftarrow \Psi'
-			\\
-			\Psi / \sigma \wedge \Psi' / \sigma & \text{if} ~ \Phi \equiv \Psi \wedge \Psi'
-			\\
-			\predication{p}(\Psi_1 / \sigma, \ldots, \Psi_n / \sigma) & \text{if} ~ \Phi \equiv \predication{p}(\psi_1, \ldots, \psi_n)
-			\\
-			\functor{f}(\Psi_1 / \sigma, \ldots, \Psi_m / \sigma) & \text{if} ~ \Phi \equiv \functor{f}(\psi_1, \ldots, \psi_m)
-			\\
-			\functor{k} & \text{if} ~ \Phi \equiv \functor{k}
-			\\
-			t & \text{if} ~ \Phi \equiv \variable{X} ~ \text{and} ~ (\variable{X} \mapsto t) \in \sigma
-			\\
-			\variable{X} & \text{if} ~ \Phi \equiv \variable{X} ~ \text{and} ~ (\variable{X} \mapsto t) \not\in \sigma
-		\end{cases}$$
+        Let $\Phi, \Psi, \Psi', \Psi_1, \ldots, \Psi_n$ be logic formul\ae{} (i.e. terms, predicates, or a Horn cluases) of any sort, 
+        %
+        let $\predication{p}$ be a $n$-ary predication, let $\functor{f}$ be a $m$-ary functor, let $\functor{k}$ be a constant, let $t$ be a term of any sort,
+        %
+        and let $\sigma$ be a (possibly empty) substitution;
+        %
+        then
+        
+        $$\Phi / \sigma = \begin{cases}
+            \Psi / \sigma \Leftarrow \Psi' / \sigma & \text{if} ~ \Phi \equiv \Psi \Leftarrow \Psi'
+            \\
+            \Psi / \sigma \wedge \Psi' / \sigma & \text{if} ~ \Phi \equiv \Psi \wedge \Psi'
+            \\
+            \predication{p}(\Psi_1 / \sigma, \ldots, \Psi_n / \sigma) & \text{if} ~ \Phi \equiv \predication{p}(\psi_1, \ldots, \psi_n)
+            \\
+            \functor{f}(\Psi_1 / \sigma, \ldots, \Psi_m / \sigma) & \text{if} ~ \Phi \equiv \functor{f}(\psi_1, \ldots, \psi_m)
+            \\
+            \functor{k} & \text{if} ~ \Phi \equiv \functor{k}
+            \\
+            t & \text{if} ~ \Phi \equiv \variable{X} ~ \text{and} ~ (\variable{X} \mapsto t) \in \sigma
+            \\
+            \variable{X} & \text{if} ~ \Phi \equiv \variable{X} ~ \text{and} ~ (\variable{X} \mapsto t) \not\in \sigma
+        \end{cases}$$
     \end{alertblock}
 
     \begin{exampleblock}{Examples}
         \begin{itemize}
             \item[] \alert{$\functor{f}(\variable{X}) \ /\  \varnothing$} $\equiv$ $\functor{f}(\variable{X})$
             %
-			\begin{itemize}
-				\item applying empty substitutions to formul\ae{} has no effect
-			\end{itemize} 
+            \begin{itemize}
+                \item applying empty substitutions to formul\ae{} has no effect
+            \end{itemize} 
 
-			\item[] \alert{$\functor{k} \ /\  \sigma$} $\equiv$ $\functor{k}$
+            \item[] \alert{$\functor{k} \ /\  \sigma$} $\equiv$ $\functor{k}$
             %
-			\begin{itemize}
-				\item applying substitutions to constants has no effect
-			\end{itemize} 
+            \begin{itemize}
+                \item applying substitutions to constants has no effect
+            \end{itemize} 
 
-			\item[] \alert{$\predication{p}(X, \functor{f}(Y)) \ /\  \{ X \mapsto \functor{a}, Y \mapsto \functor{b} \}$} $\equiv$ $\predication{p}(\functor{a}, \functor{f}(\functor{b}))$
+            \item[] \alert{$\predication{p}(X, \functor{f}(Y)) \ /\  \{ X \mapsto \functor{a}, Y \mapsto \functor{b} \}$} $\equiv$ $\predication{p}(\functor{a}, \functor{f}(\functor{b}))$
             %
-			\begin{itemize}
-				\item applying substitutions to formul\ae{} replaces the variables therein contained\ldots
-			\end{itemize} 
+            \begin{itemize}
+                \item applying substitutions to formul\ae{} replaces the variables therein contained\ldots
+            \end{itemize} 
 
-			\item[] \alert{$\predication{p}(X, \functor{f}(Y)) \ /\  \{ X \mapsto \functor{a} \}$} $\equiv$ $\predication{p}(\functor{a}, \functor{f}(Y))$
+            \item[] \alert{$\predication{p}(X, \functor{f}(Y)) \ /\  \{ X \mapsto \functor{a} \}$} $\equiv$ $\predication{p}(\functor{a}, \functor{f}(Y))$
             %
-			\begin{itemize}
-				\item \ldots provided that the variable is contained in the substitution\ldots
-			\end{itemize} 
+            \begin{itemize}
+                \item \ldots provided that the variable is contained in the substitution\ldots
+            \end{itemize} 
 
-			\item[] \alert{$\predication{p}(X, \functor{f}(Y)) \ /\  \{ X \mapsto \functor{a}, Z \mapsto \functor{b} \}$} $\equiv$ $\predication{p}(\functor{a}, \functor{f}(Y))$
+            \item[] \alert{$\predication{p}(X, \functor{f}(Y)) \ /\  \{ X \mapsto \functor{a}, Z \mapsto \functor{b} \}$} $\equiv$ $\predication{p}(\functor{a}, \functor{f}(Y))$
             %
-			\begin{itemize}
-				\item \ldots and in the formula
-			\end{itemize} 
+            \begin{itemize}
+                \item \ldots and in the formula
+            \end{itemize} 
         \end{itemize}
     \end{exampleblock}
 \end{frame}
@@ -264,53 +264,62 @@
 \begin{frame}[allowframebreaks]{Refreshing Formul\ae{}}
     \begin{block}{Purpose}
         Allowing a formula to be re-used in different contexts, avoiding undesired variable assignments 
-		%
-		\begin{itemize}
-			\item this is not relevant in theory, but very important in practice
-		\end{itemize}
+        %
+        \begin{itemize}
+            \item this is not relevant in theory, but very important in practice
+        \end{itemize}
     \end{block}
     %
     \begin{block}{Informal definition}
         A formula is \alert{refreshed} by 
-		%
-		\begin{itemize}
-			\item \emph{consistently} replacing each variable therein contained
-			\item with some \emph{bare new}\footnote{never used before} variable of similar name 
-		\end{itemize}
+        %
+        \begin{itemize}
+            \item \emph{consistently} replacing each variable therein contained
+            \item with some \emph{bare new}\footnote{never used before} variable of similar name 
+        \end{itemize}
     \end{block}
     %
     \begin{alertblock}{Formal definition}
-		Let 
-		%
-		\begin{itemize}
-			\item \alert{$\Phi$} be a formula (i.e. term, predicate, or Horn cluase) of any sort 
-			\item \alert{$\rho = \{ \variable{X} \mapsto \hat{\variable{X}} \mid \forall \variable{X} \in \Phi \}$} be the refreshing substitution for $\Phi$
-			%
-			\begin{itemize}\small
-				\item where $\hat{\variable{X}}$ is a variable which has \alert{never been used before}
-			\end{itemize} 
-		\end{itemize}
-		%
-		then we define ``refreshing $\Phi$'' as the operation of applying $\rho$ to $\Phi$:hat
-		%
-		\begin{center}
-			$ \text{refresh}(\Phi) = \alert{\Phi / \rho} $
-		\end{center}
+        Let 
+        %
+        \begin{itemize}
+            \item \alert{$\Phi$} be a formula (i.e. term, predicate, or Horn cluase) of any sort 
+            \item \alert{$\rho = \{ \variable{X} \mapsto \hat{\variable{X}} \mid \forall \variable{X} \in \Phi \}$} be the refreshing substitution for $\Phi$
+            %
+            \begin{itemize}\small
+                \item where $\hat{\variable{X}}$ is a variable which has \alert{never been used before}
+            \end{itemize} 
+        \end{itemize}
+        %
+        then we define ``refreshing $\Phi$'' as the operation of applying $\rho$ to $\Phi$:hat
+        %
+        \begin{center}
+            $ \text{refresh}(\Phi) = \alert{\Phi / \rho} $
+        \end{center}
     \end{alertblock}
 
     \begin{exampleblock}{Examples}
         \begin{multicols}{2}\small
-			\begin{itemize}
-				\item $\text{refresh}(\alert{\functor{f}(\variable{X}, \functor{g}(\variable{X}))})$ 
-				\item $\text{refresh}(\alert{\predication{p}(\variable{X}, \functor{f}(\variable{Y}), \functor{g}(\variable{X}))})$ 
-				\item $\text{refresh}(\alert{\predication{list}([\variable{H} \mid \variable{T} ])) \Leftarrow \predication{list}(\variable{T})})$ 
-				
-				\item[$=$] $\functor{f}(\hat{\variable{X}}, \functor{g}(\hat{\variable{X}}))$
-				\item[$=$] $\predication{p}(\hat{\variable{X}}, \functor{f}(\hat{\variable{Y}}), \functor{g}(\hat{\variable{X}}))$
-				\item[$=$] $\predication{list}([\hat{\variable{H}} \mid \hat{\variable{T} ]})) \Leftarrow \predication{list}(\hat{\variable{T}})$
-			\end{itemize}
-		\end{multicols}
+            \begin{itemize}
+                \item $\text{refresh}(\alert{\functor{f}(\variable{X}, \functor{g}(\variable{X}))})$ 
+                \item $\text{refresh}(\alert{\predication{p}(\variable{X}, \functor{f}(\variable{Y}), \functor{g}(\variable{X}))})$ 
+                \item $\text{refresh}(\alert{\predication{list}([\variable{H} \mid \variable{T} ])) \Leftarrow \predication{list}(\variable{T})})$ 
+                
+                \item[$=$] $\functor{f}(\hat{\variable{X}}, \functor{g}(\hat{\variable{X}}))$
+                \item[$=$] $\predication{p}(\hat{\variable{X}}, \functor{f}(\hat{\variable{Y}}), \functor{g}(\hat{\variable{X}}))$
+                \item[$=$] $\predication{list}([\hat{\variable{H}} \mid \hat{\variable{T} ]})) \Leftarrow \predication{list}(\hat{\variable{T}})$
+            \end{itemize}
+        \end{multicols}
     \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+    \begin{block}{Time to practice}
+        \begin{itemize}
+            \item You may start exercises about \alert{substitutions} now
+            \item cf. slide \ref{slide:ex-sub}
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 %===============================================================================
@@ -502,6 +511,15 @@
         %
         \kotlinimport{listings/unification-in-oop-langs.kt}
     \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \begin{block}{Time to practice}
+        \begin{itemize}
+            \item You may start exercises about \alert{unification} now
+            \item cf. slide \ref{slide:ex-uni}
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 %===============================================================================
@@ -915,16 +933,62 @@
 \section{Exercises}
 %===============================================================================
 
-\startExercise
+\begin{frame}[allowframebreaks]{All exercises}
 
-\begin{frame}{\currentExercise{} -- First Exercise}
-	\begin{block}{Goal}
-		Goal here
-	\end{block}
-	%
-	\begin{itemize}
-		\item further info here
-	\end{itemize}
+    \begin{alertblock}{Repository}
+        \centering
+        \url{https://gitlab.com/pika-lab/courses/ise/ay2122/lab-2}
+    \end{alertblock}
+
+    \begin{block}{Exercises about \textbf{substitutions}}
+        \label{slide:ex-sub}
+        \begin{description}
+            \startExercise
+            \item[\currentExercise] is about substitutions and their application 
+            \startExercise
+            \item[\currentExercise] is about clauses and their refreshing
+            \startExercise
+            \item[\currentExercise] is about substitutions and their merging
+        \end{description}
+    \end{block}
+    %
+    \begin{block}{Exercises about \textbf{unification}}
+        \label{slide:ex-uni}
+        \begin{description}
+            \startExercise
+            \item[\currentExercise] is about MGU and its computation
+            \startExercise
+            \item[\currentExercise] is about theories and their exploitation for clause retrieval via unification
+        \end{description}
+    \end{block}
+    %
+    \begin{block}{Exercises about \textbf{resolution}}
+        \label{slide:ex-res}
+        \begin{description}
+            \startExercise
+            \item[\currentExercise] is about depth-first resolution strategies
+            %
+            \begin{itemize}
+                \item here you should implement a depth-first, Prolog-like solver (supporting no side-effects)
+            \end{itemize} 
+
+            \startExercise
+            \item[\currentExercise] is about smarter resolution strategies
+            %
+            \begin{itemize}
+                \item here you should implement a Prolog-like solver (supporting no side-effects) \ldots
+                \item \ldots which avoids getting stuck in simple recursive definitions such as:
+                %
+                \begin{center}
+                    $\begin{array}{l}
+                        \predication{nat}(\functor{s}(X)) \Leftarrow \predication{nat}(X) \fullstop
+                        \\
+                        \predication{nat}(\functor{z}) \fullstop
+                    \end{array}$
+                \end{center}
+            \end{itemize} 
+        \end{description}
+    \end{block}
 \end{frame}
 
 %===============================================================================
@@ -945,10 +1009,10 @@
 \begin{frame}[c,noframenumbering]{\refname}
 %\begin{frame}[t,allowframebreaks,noframenumbering]{\refname}
 %	\tiny
-	\scriptsize
+    \scriptsize
 %	\footnotesize
-	\bibliographystyle{apalike-AMS}
-	\bibliography{ise-lab-inference}
+    \bibliographystyle{apalike-AMS}
+    \bibliography{ise-lab-inference}
 \end{frame}
 %/////////
 
