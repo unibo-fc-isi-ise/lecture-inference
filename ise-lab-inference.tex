@@ -730,10 +730,10 @@
 
         \vfill
 
-        \item FOL formul\ae{} are \alert{rarely} Skolemized and in \alert{conjunctive} form
+        \item FOL formul\ae{} are \alert{rarely} Skolemized and in \alert{disjunctive} form
         %
         \begin{itemize}
-            \item conversely, Horn clauses are Skolemized \& conjunctive \alert{by definition}
+            \item conversely, Horn clauses are Skolemized \& disjunctive \alert{by definition}
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -745,7 +745,7 @@
         \begin{itemize}
             \item SLD just applied SL to Horn Clauses
             
-            \item Horn clauses are Skolemized \& conjunctive \alert{by definition}
+            \item Horn clauses are Skolemized \& disjunctive \alert{by definition}
             
             \item Easier to select couples of literals to be simplified
             %
@@ -782,7 +782,7 @@
         \end{multicols}
         %
         \begin{itemize}
-            \item $\predication{son}(X, Y) \Leftarrow \predication{parent}(Y, Y) \wedge \predication{male}(X) \fullstop$
+            \item $\predication{son}(X, Y) \Leftarrow \predication{parent}(Y, X) \wedge \predication{male}(X) \fullstop$
             \item $\Leftarrow \predication{son}(S, \functor{jacob}) \fullstop$
         \end{itemize}
     \end{block}
@@ -808,7 +808,7 @@
         \end{multicols}
         %
         \begin{itemize}
-            \item $\predication{son}(X, Y) \vee \neg\predication{parent}(Y, Y) \vee \neg\predication{male}(X) \fullstop$
+            \item $\predication{son}(X, Y) \vee \neg\predication{parent}(Y, X) \vee \neg\predication{male}(X) \fullstop$
             \item $\neg\predication{son}(S, \functor{jacob}) \fullstop$
         \end{itemize}
     \end{alertblock}
